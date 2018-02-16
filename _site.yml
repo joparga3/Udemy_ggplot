@@ -1,0 +1,7 @@
+name: "GGplot"
+navbar:
+  title: "GGplot"
+  left:
+    - text: "GGplot"
+      href: index.html
+

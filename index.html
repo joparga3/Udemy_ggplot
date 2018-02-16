@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Jose Parreno Garcia" />
+
+
+<title>GGPLOT</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">GGplot</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">GGplot</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">GGPLOT</h1>
+<h4 class="author"><em>Jose Parreno Garcia</em></h4>
+<h4 class="date"><em>February 2018</em></h4>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#ggplot2-basics"><span class="toc-section-number">1</span> GGplot2 basics</a><ul>
+<li><a href="#making-simple-scatter-plot"><span class="toc-section-number">1.1</span> Making simple scatter plot</a><ul>
+<li><a href="#adding-line-of-best-fit"><span class="toc-section-number">1.1.1</span> Adding line of best fit</a></li>
+</ul></li>
+<li><a href="#axis"><span class="toc-section-number">1.2</span> Axis</a><ul>
+<li><a href="#changing-axis-limits"><span class="toc-section-number">1.2.1</span> Changing axis limits</a></li>
+<li><a href="#titles-and-labels"><span class="toc-section-number">1.2.2</span> Titles and labels</a></li>
+<li><a href="#changing-axis-text"><span class="toc-section-number">1.2.3</span> Changing axis text</a></li>
+<li><a href="#changing-fonts"><span class="toc-section-number">1.2.4</span> Changing fonts</a></li>
+</ul></li>
+<li><a href="#changing-colours"><span class="toc-section-number">1.3</span> Changing colours</a><ul>
+<li><a href="#assigning-one-colour"><span class="toc-section-number">1.3.1</span> Assigning one colour</a></li>
+<li><a href="#assigning-colour-based-on-another-column"><span class="toc-section-number">1.3.2</span> Assigning colour based on another column</a></li>
+<li><a href="#changing-colour-palette"><span class="toc-section-number">1.3.3</span> Changing colour palette</a></li>
+<li><a href="#different-sizes-of-points-depending-on-another-column"><span class="toc-section-number">1.3.4</span> Different sizes of points depending on another column</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#manipulate-legend-adding-text-to-plot-and-annotations"><span class="toc-section-number">2</span> Manipulate legend, adding text to plot and annotations</a><ul>
+<li><a href="#changing-legend-components"><span class="toc-section-number">2.1</span> Changing legend components</a></li>
+<li><a href="#adding-text-to-the-plot"><span class="toc-section-number">2.2</span> Adding text to the plot</a></li>
+<li><a href="#add-annotation-to-the-chart"><span class="toc-section-number">2.3</span> Add annotation to the chart</a></li>
+</ul></li>
+<li><a href="#drawing-multiple-plots-with-faceting"><span class="toc-section-number">3</span> Drawing multiple plots with faceting</a><ul>
+<li><a href="#faceting-against-xy-vars-against-an-extra-var"><span class="toc-section-number">3.1</span> Faceting against x~y vars against an extra var</a></li>
+<li><a href="#faceting-against-xy-vars-against-2-extra-vars"><span class="toc-section-number">3.2</span> Faceting against x~y vars against 2 extra vars</a></li>
+<li><a href="#laying-multiple-charts-in-a-single-panel"><span class="toc-section-number">3.3</span> Laying multiple charts in a single panel</a></li>
+</ul></li>
+<li><a href="#bar-charts"><span class="toc-section-number">4</span> Bar charts</a><ul>
+<li><a href="#simplest-bar-chart---one-variable"><span class="toc-section-number">4.1</span> Simplest bar chart - one variable</a></li>
+<li><a href="#bar-chart-filled-depending-on-other-variable"><span class="toc-section-number">4.2</span> Bar chart filled depending on other variable</a></li>
+<li><a href="#bar-chart-showing-100-fill"><span class="toc-section-number">4.3</span> Bar chart showing 100% fill</a></li>
+<li><a href="#bar-chart-of-aggregated-data"><span class="toc-section-number">4.4</span> Bar chart of aggregated data</a></li>
+<li><a href="#box-plot"><span class="toc-section-number">4.5</span> Box plot</a></li>
+<li><a href="#box-plot-by-category"><span class="toc-section-number">4.6</span> Box plot by category</a></li>
+</ul></li>
+</ul>
+</div>
+
+<style>
+body {
+text-align: justify}
+
+</style>
+<p><br></p>
+<pre class="r"><code>library(knitr)</code></pre>
+<p><br></p>
+<div id="ggplot2-basics" class="section level1">
+<h1><span class="header-section-number">1</span> GGplot2 basics</h1>
+<div id="making-simple-scatter-plot" class="section level2">
+<h2><span class="header-section-number">1.1</span> Making simple scatter plot</h2>
+<pre class="r"><code>require(ggplot2)
+data(&quot;midwest&quot;, package = &quot;ggplot2&quot;)
+
+g = ggplot(midwest, aes(x = area, y = poptotal))
+g = g + geom_point()
+g</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-56-1.png" /><!-- --></p>
+<div id="adding-line-of-best-fit" class="section level3">
+<h3><span class="header-section-number">1.1.1</span> Adding line of best fit</h3>
+<pre class="r"><code>g = ggplot(midwest, aes(x = area, y = poptotal))
+g = g + geom_point()
+g = g + geom_smooth(method = &quot;lm&quot;)
+g</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-57-1.png" /><!-- --></p>
+</div>
+</div>
+<div id="axis" class="section level2">
+<h2><span class="header-section-number">1.2</span> Axis</h2>
+<div id="changing-axis-limits" class="section level3">
+<h3><span class="header-section-number">1.2.1</span> Changing axis limits</h3>
+<p>2 ways of changing axis limits:</p>
+<ul>
+<li>Bad one -&gt; deleting points to match the window we want to focus on. It is bad practice because if we were to fit the line of best fit, this would change given that we have now a different set of points</li>
+<li>Good one -&gt; zoom in and only focus on the are you want to focus.</li>
+</ul>
+<pre class="r"><code># Correct way of doing it
+g = ggplot(midwest, aes(x = area, y = poptotal))
+g = g + geom_point()
+g = g + geom_smooth(method = &quot;lm&quot;)
+g = g + coord_cartesian(xlim = c(0,0.1), ylim = c(0, 1000000))
+g</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-58-1.png" /><!-- --></p>
+</div>
+<div id="titles-and-labels" class="section level3">
+<h3><span class="header-section-number">1.2.2</span> Titles and labels</h3>
+<pre class="r"><code># Correct way of doing it
+g = ggplot(midwest, aes(x = area, y = poptotal))
+g = g + geom_point()
+g = g + geom_smooth(method = &quot;lm&quot;)
+g = g + coord_cartesian(xlim = c(0,0.1), ylim = c(0, 1000000))
+g = g + labs(title = &quot;Area vs Population&quot;
+             , y = &quot;Population&quot;
+             , x = &quot;Area&quot;)
+g </code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-59-1.png" /><!-- --></p>
+</div>
+<div id="changing-axis-text" class="section level3">
+<h3><span class="header-section-number">1.2.3</span> Changing axis text</h3>
+<pre class="r"><code># ADDING AT SPECIFIC BREAKS
+g = ggplot(midwest, aes(x = area, y = poptotal))
+g = g + geom_point(col = &quot;steelblue&quot;)
+g = g + geom_smooth(method = &quot;lm&quot;, col = &quot;firebrick&quot;)
+g = g + coord_cartesian(xlim = c(0,0.1), ylim = c(0, 1000000))
+g = g + labs(title = &quot;Area vs Population&quot;
+             , y = &quot;Population&quot;
+             , x = &quot;Area&quot;)
+g = g + scale_x_continuous(breaks = seq(0, 0.1, 0.01))
+g</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-60-1.png" /><!-- --></p>
+<pre class="r"><code># CHANGING THE LABELS OF THE TICKS - adding letters as example
+g = ggplot(midwest, aes(x = area, y = poptotal))
+g = g + geom_point(col = &quot;steelblue&quot;)
+g = g + geom_smooth(method = &quot;lm&quot;, col = &quot;firebrick&quot;)
+g = g + coord_cartesian(xlim = c(0,0.1), ylim = c(0, 1000000))
+g = g + labs(title = &quot;Area vs Population&quot;
+             , y = &quot;Population&quot;
+             , x = &quot;Area&quot;)
+g = g + scale_x_continuous(breaks = seq(0, 0.1, 0.01), labels = letters[1:11])
+g</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-61-1.png" /><!-- --></p>
+<pre class="r"><code># CHANGING THE LABELS OF THE TICKS - adding percentages
+g = ggplot(midwest, aes(x = area, y = poptotal))
+g = g + geom_point(col = &quot;steelblue&quot;)
+g = g + geom_smooth(method = &quot;lm&quot;, col = &quot;firebrick&quot;)
+g = g + coord_cartesian(xlim = c(0,0.1), ylim = c(0, 1000000))
+g = g + labs(title = &quot;Area vs Population&quot;
+             , y = &quot;Population&quot;
+             , x = &quot;Area&quot;)
+g = g + scale_x_continuous(breaks = seq(0, 0.1, 0.01), labels = sprintf(&#39;%1.2f%%&#39;, seq(0, 0.1, 0.01)))
+g = g + scale_y_continuous(breaks = seq(0, 1000000, 200000))
+g</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-62-1.png" /><!-- --></p>
+</div>
+<div id="changing-fonts" class="section level3">
+<h3><span class="header-section-number">1.2.4</span> Changing fonts</h3>
+<pre class="r"><code># CHANGING THE LABELS OF THE TICKS - adding percentages
+g = ggplot(midwest, aes(x = area, y = poptotal))
+g = g + geom_point(col = &quot;steelblue&quot;)
+g = g + geom_smooth(method = &quot;lm&quot;, col = &quot;firebrick&quot;)
+g = g + coord_cartesian(xlim = c(0,0.1), ylim = c(0, 1000000))
+g = g + labs(title = &quot;Area vs Population&quot;
+             , y = &quot;Population&quot;
+             , x = &quot;Area&quot;)
+g = g + scale_x_continuous(breaks = seq(0, 0.1, 0.01), labels = sprintf(&#39;%1.2f%%&#39;, seq(0, 0.1, 0.01)))
+g = g + scale_y_continuous(breaks = seq(0, 1000000, 200000))
+g = g + theme(plot.title = element_text(size = 12, face = &quot;bold&quot;, color = &quot;steelblue&quot;, lineheight = 1.2)
+              , axis.title.x = element_text(size = 10)
+              , axis.title.y = element_text(size = 10)
+              , axis.text.x = element_text(size = 10, angle = 30)
+              , axis.text.y = element_text(size = 10))
+g</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-63-1.png" /><!-- --></p>
+</div>
+</div>
+<div id="changing-colours" class="section level2">
+<h2><span class="header-section-number">1.3</span> Changing colours</h2>
+<div id="assigning-one-colour" class="section level3">
+<h3><span class="header-section-number">1.3.1</span> Assigning one colour</h3>
+<pre class="r"><code># Correct way of doing it
+g = ggplot(midwest, aes(x = area, y = poptotal))
+g = g + geom_point(col = &quot;steelblue&quot;)
+g = g + geom_smooth(method = &quot;lm&quot;, col = &quot;firebrick&quot;)
+g = g + coord_cartesian(xlim = c(0,0.1), ylim = c(0, 1000000))
+g = g + labs(title = &quot;Area vs Population&quot;
+             , y = &quot;Population&quot;
+             , x = &quot;Area&quot;)
+g </code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-64-1.png" /><!-- --></p>
+</div>
+<div id="assigning-colour-based-on-another-column" class="section level3">
+<h3><span class="header-section-number">1.3.2</span> Assigning colour based on another column</h3>
+<pre class="r"><code>g = ggplot(midwest, aes(x = area, y = poptotal))
+g = g + geom_point(aes(col = state))
+g = g + geom_smooth(method = &quot;lm&quot;, col = &quot;firebrick&quot;)
+g = g + coord_cartesian(xlim = c(0,0.1), ylim = c(0, 1000000))
+g = g + labs(title = &quot;Area vs Population&quot;
+             , y = &quot;Population&quot;
+             , x = &quot;Area&quot;)
+g </code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-65-1.png" /><!-- --></p>
+</div>
+<div id="changing-colour-palette" class="section level3">
+<h3><span class="header-section-number">1.3.3</span> Changing colour palette</h3>
+<pre class="r"><code>library(RColorBrewer)
+
+g = ggplot(midwest, aes(x = area, y = poptotal))
+g = g + geom_point(aes(col = state))
+g = g + geom_smooth(method = &quot;lm&quot;, col = &quot;firebrick&quot;)
+g = g + coord_cartesian(xlim = c(0,0.1), ylim = c(0, 1000000))
+g = g + labs(title = &quot;Area vs Population&quot;
+             , y = &quot;Population&quot;
+             , x = &quot;Area&quot;)
+g = g + scale_color_brewer(palette = &quot;Set1&quot;)
+g</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-66-1.png" /><!-- --></p>
+</div>
+<div id="different-sizes-of-points-depending-on-another-column" class="section level3">
+<h3><span class="header-section-number">1.3.4</span> Different sizes of points depending on another column</h3>
+<pre class="r"><code>g = ggplot(midwest, aes(x = area, y = poptotal))
+g = g + geom_point(aes(col = state, size = popdensity))
+g = g + geom_smooth(method = &quot;lm&quot;, col = &quot;firebrick&quot;)
+g = g + coord_cartesian(xlim = c(0,0.1), ylim = c(0, 1000000))
+g = g + labs(title = &quot;Area vs Population&quot;
+             , y = &quot;Population&quot;
+             , x = &quot;Area&quot;)
+g</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-67-1.png" /><!-- --></p>
+<p><br></p>
+</div>
+</div>
+</div>
+<div id="manipulate-legend-adding-text-to-plot-and-annotations" class="section level1">
+<h1><span class="header-section-number">2</span> Manipulate legend, adding text to plot and annotations</h1>
+<div id="changing-legend-components" class="section level2">
+<h2><span class="header-section-number">2.1</span> Changing legend components</h2>
+<pre class="r"><code># CHANGING LEGEND TITLE
+
+g = ggplot(midwest, aes(x = area, y = poptotal))
+g = g + geom_point(aes(col = state, size = popdensity))
+g = g + geom_smooth(method = &quot;lm&quot;, col = &quot;firebrick&quot;)
+g = g + coord_cartesian(xlim = c(0,0.1), ylim = c(0, 1000000))
+g = g + labs(title = &quot;Area vs Population&quot;
+             , y = &quot;Population&quot;
+             , x = &quot;Area&quot;)
+g = g + scale_color_discrete(name = &quot;State&quot;) + scale_size_continuous(name = &quot;Density&quot;)
+g</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-68-1.png" /><!-- --></p>
+<pre class="r"><code># CHANGING LEGEND POSITION
+
+g = ggplot(midwest, aes(x = area, y = poptotal))
+g = g + geom_point(aes(col = state, size = popdensity))
+g = g + geom_smooth(method = &quot;lm&quot;, col = &quot;firebrick&quot;)
+g = g + coord_cartesian(xlim = c(0,0.1), ylim = c(0, 1000000))
+g = g + labs(title = &quot;Area vs Population&quot;
+             , y = &quot;Population&quot;
+             , x = &quot;Area&quot;)
+g = g + scale_color_discrete(name = &quot;State&quot;) + scale_size_continuous(name = &quot;Density&quot;)
+g = g + theme(legend.position = &quot;bottom&quot;)
+g</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-69-1.png" /><!-- --></p>
+<pre class="r"><code># CHANGING LEGEND STYLE
+
+g = ggplot(midwest, aes(x = area, y = poptotal))
+g = g + geom_point(aes(col = state, size = popdensity))
+g = g + geom_smooth(method = &quot;lm&quot;, col = &quot;firebrick&quot;)
+g = g + coord_cartesian(xlim = c(0,0.1), ylim = c(0, 1000000))
+g = g + labs(title = &quot;Area vs Population&quot;
+             , y = &quot;Population&quot;
+             , x = &quot;Area&quot;)
+g = g + scale_color_discrete(name = &quot;State&quot;) + scale_size_continuous(name = &quot;Density&quot;)
+g = g + theme(legend.title = element_text(size = 12, color = &quot;firebrick&quot;)
+              , legend.text = element_text(size = 10)
+              , legend.key = element_rect(fill = &quot;gray&quot;))
+g = g + guides(colour = guide_legend(override.aes = list(size = 2, stroke = 1.5)))
+g</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-70-1.png" /><!-- --></p>
+</div>
+<div id="adding-text-to-the-plot" class="section level2">
+<h2><span class="header-section-number">2.2</span> Adding text to the plot</h2>
+<pre class="r"><code># Text for only records where population is more than 400k
+midwest_sub = midwest[midwest$poptotal &gt; 400000, ]
+midwest_sub$large_county = ifelse(midwest_sub$poptotal &gt; 400000, midwest_sub$county, &quot;&quot;)
+
+g = ggplot(midwest, aes(x = area, y = poptotal))
+g = g + geom_point(aes(col = state, size = popdensity))
+g = g + geom_smooth(method = &quot;lm&quot;, col = &quot;firebrick&quot;)
+g = g + coord_cartesian(xlim = c(0,0.1), ylim = c(0, 1000000))
+g = g + labs(title = &quot;Area vs Population&quot;
+             , y = &quot;Population&quot;
+             , x = &quot;Area&quot;)
+g = g + scale_color_discrete(name = &quot;State&quot;) + scale_size_continuous(name = &quot;Density&quot;)
+g = g + theme(legend.title = element_text(size = 12, color = &quot;firebrick&quot;)
+              , legend.text = element_text(size = 10)
+              , legend.key = element_rect(fill = &quot;gray&quot;))
+g = g + guides(colour = guide_legend(override.aes = list(size = 2, stroke = 1.5)))
+g = g + geom_text(aes(label = large_county), size = 2, data = midwest_sub)
+g = g + geom_label(aes(label = large_county), size = 2, data = midwest_sub, alpha = 0.25)
+g</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-71-1.png" /><!-- --></p>
+</div>
+<div id="add-annotation-to-the-chart" class="section level2">
+<h2><span class="header-section-number">2.3</span> Add annotation to the chart</h2>
+<pre class="r"><code>library(grid)
+
+my_text = &quot;This text is at x = 0.7 and y = 0.9&quot;
+my_grob = grid.text(my_text, x = 0.7, y = 0.9, gp = gpar(col = &quot;firebrick&quot;
+                                                         , fontsize = 10
+                                                         , fontface = &quot;bold&quot;))</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-72-1.png" /><!-- --></p>
+<pre class="r"><code># Text for only records where population is more than 400k
+midwest_sub = midwest[midwest$poptotal &gt; 400000, ]
+midwest_sub$large_county = ifelse(midwest_sub$poptotal &gt; 400000, midwest_sub$county, &quot;&quot;)
+
+g = ggplot(midwest, aes(x = area, y = poptotal))
+g = g + geom_point(aes(col = state, size = popdensity))
+g = g + geom_smooth(method = &quot;lm&quot;, col = &quot;firebrick&quot;)
+g = g + coord_cartesian(xlim = c(0,0.1), ylim = c(0, 1000000))
+g = g + labs(title = &quot;Area vs Population&quot;
+             , y = &quot;Population&quot;
+             , x = &quot;Area&quot;)
+g = g + scale_color_discrete(name = &quot;State&quot;) + scale_size_continuous(name = &quot;Density&quot;)
+g = g + theme(legend.title = element_text(size = 12, color = &quot;firebrick&quot;)
+              , legend.text = element_text(size = 10)
+              , legend.key = element_rect(fill = &quot;gray&quot;))
+g = g + guides(colour = guide_legend(override.aes = list(size = 2, stroke = 1.5)))
+g = g + geom_text(aes(label = large_county), size = 2, data = midwest_sub)
+g = g + geom_label(aes(label = large_county), size = 2, data = midwest_sub, alpha = 0.25)
+g = g + annotation_custom(my_grob)
+g</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-72-2.png" /><!-- --></p>
+</div>
+</div>
+<div id="drawing-multiple-plots-with-faceting" class="section level1">
+<h1><span class="header-section-number">3</span> Drawing multiple plots with faceting</h1>
+<div id="faceting-against-xy-vars-against-an-extra-var" class="section level2">
+<h2><span class="header-section-number">3.1</span> Faceting against x~y vars against an extra var</h2>
+<pre class="r"><code># Load data
+data(mpg, package = &quot;ggplot2&quot;)
+
+# Plot V1
+g = ggplot(mpg, aes(x = displ, y = hwy))
+g = g + geom_point()
+g = g + geom_smooth(method = &quot;lm&quot;)
+g = g + theme_bw()
+g = g + facet_wrap(~ class)
+g</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-73-1.png" /><!-- --></p>
+<pre class="r"><code># Load data
+data(mpg, package = &quot;ggplot2&quot;)
+
+# Plot V2
+g = ggplot(mpg, aes(x = displ, y = hwy))
+g = g + geom_point()
+g = g + geom_smooth(method = &quot;lm&quot;)
+g = g + theme_bw()
+g = g + facet_grid(~ class)
+g</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-74-1.png" /><!-- --></p>
+</div>
+<div id="faceting-against-xy-vars-against-2-extra-vars" class="section level2">
+<h2><span class="header-section-number">3.2</span> Faceting against x~y vars against 2 extra vars</h2>
+<pre class="r"><code># Load data
+data(mpg, package = &quot;ggplot2&quot;)
+
+g = ggplot(mpg, aes(x = displ, y = hwy))
+g = g + geom_point()
+g = g + geom_smooth(method = &quot;lm&quot;)
+g = g + theme_bw()
+g = g + facet_grid(manufacturer ~ class)
+g</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-75-1.png" /><!-- --></p>
+</div>
+<div id="laying-multiple-charts-in-a-single-panel" class="section level2">
+<h2><span class="header-section-number">3.3</span> Laying multiple charts in a single panel</h2>
+<pre class="r"><code>library(gridExtra)
+
+g = ggplot(mpg, aes(x = displ, y = hwy))
+g = g + geom_point()
+g = g + geom_smooth(method = &quot;lm&quot;)
+g = g + theme_bw()
+g = g + facet_grid(~ class)
+g1 = g
+
+g = ggplot(mpg, aes(x = displ, y = hwy))
+g = g + geom_point()
+g = g + geom_smooth(method = &quot;lm&quot;)
+g = g + theme_bw()
+g = g + facet_grid(~ cyl)
+g2 = g
+
+gridExtra::grid.arrange(g1, g2, ncol = 2)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-76-1.png" /><!-- --></p>
+</div>
+</div>
+<div id="bar-charts" class="section level1">
+<h1><span class="header-section-number">4</span> Bar charts</h1>
+<div id="simplest-bar-chart---one-variable" class="section level2">
+<h2><span class="header-section-number">4.1</span> Simplest bar chart - one variable</h2>
+<pre class="r"><code># When only 1 variable is provided, histogram automatically computes the count
+g = ggplot(mpg, aes(manufacturer))
+g = g + geom_bar()
+g</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-77-1.png" /><!-- --></p>
+</div>
+<div id="bar-chart-filled-depending-on-other-variable" class="section level2">
+<h2><span class="header-section-number">4.2</span> Bar chart filled depending on other variable</h2>
+<pre class="r"><code>g = ggplot(mpg, aes(manufacturer))
+g = g + geom_bar(width = 0.8, aes(fill = class))
+g</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-78-1.png" /><!-- --></p>
+</div>
+<div id="bar-chart-showing-100-fill" class="section level2">
+<h2><span class="header-section-number">4.3</span> Bar chart showing 100% fill</h2>
+<pre class="r"><code>g = ggplot(mpg, aes(manufacturer))
+g = g + geom_bar(width = 0.8, aes(fill = class), position = &quot;fill&quot;)
+g</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-79-1.png" /><!-- --></p>
+</div>
+<div id="bar-chart-of-aggregated-data" class="section level2">
+<h2><span class="header-section-number">4.4</span> Bar chart of aggregated data</h2>
+<pre class="r"><code># Aggregate data
+cty_mpg = aggregate(mpg$cty, by = list(mpg$manufacturer), FUN = mean)
+colnames(cty_mpg) = c(&quot;manufacturer&quot;, &quot;mileage&quot;)
+
+g = ggplot(cty_mpg, aes(x = manufacturer, y = mileage, fill = mileage))
+g = g + geom_bar(stat = &quot;identity&quot;)
+g</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-80-1.png" /><!-- --></p>
+</div>
+<div id="box-plot" class="section level2">
+<h2><span class="header-section-number">4.5</span> Box plot</h2>
+<pre class="r"><code># Aggregate data
+cty_mpg = aggregate(mpg$cty, by = list(mpg$manufacturer), FUN = mean)
+colnames(cty_mpg) = c(&quot;manufacturer&quot;, &quot;mileage&quot;)
+
+g = ggplot(mpg, aes(x = manufacturer, y = cty))
+g = g + geom_boxplot()
+g</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-81-1.png" /><!-- --></p>
+</div>
+<div id="box-plot-by-category" class="section level2">
+<h2><span class="header-section-number">4.6</span> Box plot by category</h2>
+<pre class="r"><code># Aggregate data
+cty_mpg = aggregate(mpg$cty, by = list(mpg$manufacturer), FUN = mean)
+colnames(cty_mpg) = c(&quot;manufacturer&quot;, &quot;mileage&quot;)
+
+g = ggplot(mpg, aes(x = manufacturer, y = cty))
+g = g + geom_boxplot(aes(fill = class), width = 0.5)
+g</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-82-1.png" /><!-- --></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
